@@ -5,18 +5,18 @@
 from dpla.api import DPLA
 from time import sleep
 import sys
+from credentials import *
 
 #get filename from command line argument
 input_filename = sys.argv[1]
 
 #create DPLA object using dpla module and your API key
-dpla = DPLA('9e772db07b96bf5971582a9e95d873ef')
+#API key should be stored in a separate file called credentials.py
+dpla = DPLA(DPLA_KEY)
 
 #Opens file with identifiers and then reads them into a list
 file_identifiers = open(input_filename,"r")
 identifiers = file_identifiers.readlines()
-
-#print(identifiers)
 
 #open file for writing results
 file_results = open(r"SearchResults.txt","w")
