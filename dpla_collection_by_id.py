@@ -15,11 +15,7 @@ input_filename = sys.argv[1]
 dpla = DPLA(DPLA_KEY)
 
 #Opens file with identifiers and then reads them into a list
-# file_identifiers = open(input_filename,"r")
-# identifiers = file_identifiers.readlines()
-
 df = pandas.read_csv(input_filename, encoding='latin1')
-
 identifiers = df["Item ID"]
 
 #open file for writing results
