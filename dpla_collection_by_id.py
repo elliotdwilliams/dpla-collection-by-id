@@ -1,26 +1,32 @@
-# This script takes a list of DPLA identifiers, then queries the DPLA API to get the collection name for that item.
-# Developed to take a list of items from the DPLA Analytics Dashboard (such as catalog views or click-throughs), and analyze them by collection.
-# Accepts a filename as a command line argument; that file should include a list of DPLA identifiers
+"""Query DPLA API to get collection name for a given list of DPLA identifiers.
 
-from dpla.api import DPLA
+Accepts a filename as a command line argument. That file should include a list of DPLA
+identifiers with heading "Item ID".  Designed to accept an export file from the DPLA
+Analytics Dashboard (such as catalog views or click-throughs).
+"""
+
+import sys
 from time import sleep
-import sys, pandas, numpy
-from credentials import *
 
-#get filename from command line argument
-input_filename = sys.argv[1]
+from pandas import read_csv
+from dpla.api import DPLA
 
-#create DPLA object using dpla module and your API key
-#API key should be stored in a separate file called credentials.py
+from credentials import DPLA_KEY
+
+# Get filename from command line argument
+INPUT_FILE = sys.argv[1]
+
+# Create DPLA object using dpla module and your API key
+# API key should be stored in a separate file called credentials.py
 dpla = DPLA(DPLA_KEY)
 
-#Opens file with identifiers and then reads them into a list
-df = pandas.read_csv(input_filename, encoding='latin1')
+# Open file with identifiers and then reads them into a list
+df = read_csv(INPUT_FILE, encoding="latin1")
 identifiers = df["Item ID"]
 
-#open file for writing results
-file_results = open(r"SearchResults.txt","w")
-file_results.write("IDENTIFIER"+"\t"+"INSTITUTION"+"\t"+"COLLECTION"+"\n")
+# Open file for writing results
+file_results = open(r"SearchResults.txt", "w")
+file_results.write("IDENTIFIER" + "\t" + "INSTITUTION" + "\t" + "COLLECTION" + "\n")
 
 for identifier in identifiers:
     identifier = identifier.rstrip()
@@ -31,13 +37,13 @@ for identifier in identifiers:
         institution = result.items[0]["dataProvider"]["name"]
         collection = result.items[0]["sourceResource"]["collection"][0]["title"]
 
-        print(identifier+"\t"+institution+"\t"+collection)
-        file_results.write(identifier+"\t"+institution+"\t"+collection+"\n")
+        print(identifier + "\t" + institution + "\t" + collection)
+        file_results.write(identifier + "\t" + institution + "\t" + collection + "\n")
 
-    #error handling for when DPLA API doesn't return the item record (i.e. the item is no longer in DPLA)
+    # Error handling for when DPLA API doesn't return the item record (e.g. the item is no longer in DPLA)
     except AttributeError:
-        print(identifier+"\t"+"record not found"+"\t"+"record not found")
-        file_results.write(identifier+"\t"+"record not found"+"\t"+"record not found"+"\n")
+        print(identifier + "\t" + "record not found" + "\t" + "record not found")
+        file_results.write(identifier + "\t" + "record not found" + "\t" + "record not found" + "\n")
 
     sleep(0.50)
 
