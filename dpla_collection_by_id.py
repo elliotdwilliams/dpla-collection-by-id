@@ -40,10 +40,15 @@ for identifier in identifiers:
         print(identifier + "\t" + institution + "\t" + collection)
         file_results.write(identifier + "\t" + institution + "\t" + collection + "\n")
 
-    # Error handling for when DPLA API doesn't return the item record (e.g. the item is no longer in DPLA)
+    # Error handling for when DPLA API doesn't return item record (e.g. the item is no longer in DPLA)
     except AttributeError:
         print(identifier + "\t" + "record not found" + "\t" + "record not found")
         file_results.write(identifier + "\t" + "record not found" + "\t" + "record not found" + "\n")
+
+    # Error handling for no collection field in record (dataProvider will always be present)
+    except KeyError:
+        print(identifier + "\t" + institution + "\t" + "collection not found")
+        file_results.write(identifier + "\t" + institution + "\t" + "collection not found" + "\n")
 
     sleep(0.50)
 

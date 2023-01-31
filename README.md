@@ -19,6 +19,4 @@ IDENTIFIER	INSTITUTION	COLLECTION
 0d0f9b4a0288ce6916d7a47893ab8da0	Houston Public Library	Evelyn Norton Anderson Papers  
 0d191493da6de226a32e8e0fdbe380bd	Houston Public Library	Clayton Vertical File Collection  
 
-**TO-DO**: Handle items without a collection name value
-
 Built in Python 3.9.15. Uses the [DPLA API](https://pro.dp.la/developers/api-codex) for interacting with DPLA dataset, and [DPyLA](https://github.com/bibliotechy/DPyLA/blob/master/README.md) for interacting with the api.
